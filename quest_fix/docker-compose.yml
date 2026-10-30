@@ -1,0 +1,20 @@
+services:
+  database:
+    image: postgres:16-alpine
+    container_name: experimentariy-quest-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: quest
+      POSTGRES_USER: quest_user
+      POSTGRES_PASSWORD: local_quest_password_change_me
+    ports:
+      - "5432:5432"
+    volumes:
+      - quest_postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U quest_user -d quest"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+volumes:
+  quest_postgres_data:
